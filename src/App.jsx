@@ -6,23 +6,45 @@ function App() {
   const [selectedId, setSelectedId] = useState(dummyChats[0].id);
   const [messageText, setMessageText] = useState("");
   const [allMessages, setAllMessages] = useState(dummyMessages);
+  const [editingId, setEditingId] = useState(null);
   const currentMessages = allMessages[selectedId];
 
   const handleSend = () => {
     if (messageText.trim() === "") return;
 
-    const newMessage = {
-      id: crypto.randomUUID(),
-      content: messageText,
-      sender: { id: currentUserId, name: "You" },
-      timestamp: new Date(),
-      isRead: false,
-    };
-    const updateAllMessages = {
-      ...allMessages,
-      [selectedId]: [...allMessages[selectedId], newMessage],
-    };
-    setAllMessages(updateAllMessages);
+    if (editingId) {
+      const updatedMessagesForPerson = allMessages[selectedId].map(
+        (message) => {
+          if (message.id === editingId) {
+            return {
+              ...message,
+              content: messageText,
+            };
+          }
+          return message;
+        },
+      );
+      const updateAllMessages = {
+        ...allMessages,
+        [selectedId]: updatedMessagesForPerson,
+      };
+
+      setAllMessages(updateAllMessages);
+      setEditingId(null);
+    } else {
+      const newMessage = {
+        id: crypto.randomUUID(),
+        content: messageText,
+        sender: { id: currentUserId, name: "You" },
+        timestamp: new Date(),
+        isRead: false,
+      };
+      const updateAllMessages = {
+        ...allMessages,
+        [selectedId]: [...allMessages[selectedId], newMessage],
+      };
+      setAllMessages(updateAllMessages);
+    }
     setMessageText("");
   };
 
@@ -62,31 +84,42 @@ function App() {
       </aside>
 
       <main style={{ flex: 1 }}>
-        <h2>選ばれているID：{selectedId}</h2>
         <div>
           {currentMessages.map((message) => {
+            const isMyMessage = message.sender.id === currentUserId;
+
             return (
-              <p
+              <div
                 key={message.id}
                 style={{
-                  textAlign:
-                    message.sender.id === currentUserId ? "right" : "left",
+                  textAlign: isMyMessage ? "right" : "left",
                   whiteSpace: "pre-wrap",
+                  marginBottom: "10px",
                 }}
               >
-                {message.content}
-                {message.sender.id === currentUserId && (
-                  <button
-                    onClick={() => {
-                      if (confirm("削除しますか？")) {
-                        handleDeleteMessage(message.id);
-                      }
-                    }}
-                  >
-                    削除
-                  </button>
+                <div>{message.content}</div>
+                {isMyMessage && (
+                  <div style={{ marginTop: "5px" }}>
+                    <button
+                      onClick={() => {
+                        setMessageText(message.content);
+                        setEditingId(message.id);
+                      }}
+                    >
+                      編集
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm("削除しますか？")) {
+                          handleDeleteMessage(message.id);
+                        }
+                      }}
+                    >
+                      削除
+                    </button>
+                  </div>
                 )}
-              </p>
+              </div>
             );
           })}
         </div>
@@ -100,5 +133,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
