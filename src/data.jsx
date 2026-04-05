@@ -181,3 +181,5 @@ export const dummyChats = [
     unreadCount: 0,
   },
 ];
+
+export const currentUserId = "current";
