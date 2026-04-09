@@ -1,7 +1,12 @@
 import React from "react";
 import { currentUserId } from "../data";
 
-function ChatWindow({ messages, scrollEndRef, onOpenEditModal, onDeleteMessage }) {
+export const ChatWindow = ({
+  messages,
+  scrollEndRef,
+  onOpenEditModal,
+  onDeleteMessage,
+}) => {
   return (
     <div style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
       {messages.map((message) => {
@@ -43,6 +48,4 @@ function ChatWindow({ messages, scrollEndRef, onOpenEditModal, onDeleteMessage }
       <div ref={scrollEndRef} />
     </div>
   );
-}
-
-export default ChatWindow;
+};

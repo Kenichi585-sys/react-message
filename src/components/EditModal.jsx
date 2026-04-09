@@ -1,6 +1,6 @@
 import React from "react";
 
-function EditModal({ editText, onChangeEditText, onSave, onCancel }) {
+export const EditModal = ({ editText, onChangeEditText, onSave, onCancel }) => {
   return (
     <div
       style={{
@@ -14,6 +14,11 @@ function EditModal({ editText, onChangeEditText, onSave, onCancel }) {
         justifyContent: "center",
         alignItems: "center",
         zIndex: 1000,
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onCancel();
+        }
       }}
     >
       <div
@@ -55,6 +60,4 @@ function EditModal({ editText, onChangeEditText, onSave, onCancel }) {
       </div>
     </div>
   );
-}
-
-export default EditModal;
+};

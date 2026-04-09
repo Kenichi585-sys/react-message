@@ -1,6 +1,6 @@
 import React from "react";
 
-function Sidebar({ chats, allMessages, selectedId, onSelectChat }) {
+export const Sidebar = ({ chats, allMessages, selectedId, onSelectChat }) => {
   return (
     <aside
       style={{
@@ -12,7 +12,8 @@ function Sidebar({ chats, allMessages, selectedId, onSelectChat }) {
       <h3>チャット一覧</h3>
       {chats.map((chat) => {
         const messages = allMessages[chat.id] || [];
-        const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+        const lastMessage =
+          messages.length > 0 ? messages[messages.length - 1] : null;
 
         return (
           <div
@@ -56,6 +57,4 @@ function Sidebar({ chats, allMessages, selectedId, onSelectChat }) {
       })}
     </aside>
   );
-}
-
-export default Sidebar;
+};

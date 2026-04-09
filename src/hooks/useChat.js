@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { currentUserId, dummyChats, dummyMessages } from "../data";
 
-export function useChat() {
+export const useChat = () => {
   const [selectedId, setSelectedId] = useState(dummyChats[0].id);
   const [drafts, setDrafts] = useState({});
   const [allMessages, setAllMessages] = useState(dummyMessages);
@@ -21,13 +21,18 @@ export function useChat() {
     if (currentDraft.trim() === "") return;
 
     if (editingId) {
-      const updatedMessagesForPerson = allMessages[selectedId].map((message) => {
-        if (message.id === editingId) {
-          return { ...message, content: currentDraft };
-        }
-        return message;
+      const updatedMessagesForPerson = allMessages[selectedId].map(
+        (message) => {
+          if (message.id === editingId) {
+            return { ...message, content: currentDraft };
+          }
+          return message;
+        },
+      );
+      setAllMessages({
+        ...allMessages,
+        [selectedId]: updatedMessagesForPerson,
       });
-      setAllMessages({ ...allMessages, [selectedId]: updatedMessagesForPerson });
       setEditingId(null);
     } else {
       const newMessage = {
@@ -55,7 +60,9 @@ export function useChat() {
   const handleDeleteMessage = (messageId) => {
     setAllMessages({
       ...allMessages,
-      [selectedId]: allMessages[selectedId].filter((message) => message.id !== messageId),
+      [selectedId]: allMessages[selectedId].filter(
+        (message) => message.id !== messageId,
+      ),
     });
   };
 
@@ -112,4 +119,4 @@ export function useChat() {
     handleEditSave,
     handleEditCancel,
   };
-}
+};

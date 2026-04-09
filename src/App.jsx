@@ -1,13 +1,10 @@
 import React from "react";
 import { dummyChats } from "./data";
 import { useChat } from "./hooks/useChat";
-import Sidebar from "./components/Sidebar";
-import ChatWindow from "./components/ChatWindow";
-import MessageInput from "./components/MessageInput";
-import EditModal from "./components/EditModal";
+import { Sidebar, MessageInput, ChatWindow, EditModal } from "./components/";
 import "./App.css";
 
-function App() {
+export const App = () => {
   const {
     selectedId,
     setSelectedId,
@@ -59,6 +56,4 @@ function App() {
       )}
     </div>
   );
-}
-
-export default App;
+};
