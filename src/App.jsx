@@ -1,7 +1,13 @@
 import React from "react";
 import { dummyChats } from "./data";
 import { useChat } from "./hooks/useChat";
-import { Sidebar, MessageInput, ChatWindow, EditModal } from "./components/";
+import {
+  Sidebar,
+  MessageInput,
+  ChatWindow,
+  EditModal,
+  DeleteModal,
+} from "./components/";
 import "./App.css";
 
 export const App = () => {
@@ -18,10 +24,13 @@ export const App = () => {
     scrollEndRef,
     handleSend,
     handleKeyDown,
-    handleDeleteMessage,
     handleOpenEditModal,
     handleEditSave,
     handleEditCancel,
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleDeleteConfirm,
+    handleDeleteCancel,
   } = useChat();
 
   return (
@@ -37,7 +46,7 @@ export const App = () => {
           messages={currentMessages}
           scrollEndRef={scrollEndRef}
           onOpenEditModal={handleOpenEditModal}
-          onDeleteMessage={handleDeleteMessage}
+          onOpenDeleteModal={handleOpenDeleteModal}
         />
         <MessageInput
           value={currentDraft}
@@ -52,6 +61,12 @@ export const App = () => {
           onChangeEditText={setEditText}
           onSave={handleEditSave}
           onCancel={handleEditCancel}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteModal
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteCancel}
         />
       )}
     </div>

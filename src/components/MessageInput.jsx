@@ -1,23 +1,35 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 export const MessageInput = ({ value, onChange, onKeyDown, onSend }) => {
+  const textareaRef = useRef(null);
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      const scHeight = textarea.scrollHeight;
+      textarea.style.height = `${scHeight}px`;
+
+      if (scHeight > 150) {
+        textarea.style.overflowY = "auto";
+      } else {
+        textarea.style.overflowY = "hidden";
+      }
+    }
+  }, [value]);
+
   return (
-    <div style={{ padding: "10px", borderTop: "1px solid #ccc" }}>
+    <div className="input-container">
       <textarea
+        ref={textareaRef}
+        className="chat-textarea"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={onKeyDown}
-        style={{
-          width: "100%",
-          height: "80px",
-          minHeight: "50px",
-          maxHeight: "200px",
-          resize: "vertical",
-          padding: "8px",
-          boxSizing: "border-box",
-        }}
+        rows={1}
       />
-      <button onClick={onSend}>送信</button>
+      <button className="send-button" onClick={onSend} disabled={!value.trim()}>
+        送信
+      </button>
     </div>
   );
 };

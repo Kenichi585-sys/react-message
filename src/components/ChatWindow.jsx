@@ -5,7 +5,7 @@ export const ChatWindow = ({
   messages,
   scrollEndRef,
   onOpenEditModal,
-  onDeleteMessage,
+  onOpenDeleteModal,
 }) => {
   return (
     <div style={{ flex: 1, overflowY: "auto", padding: "10px" }}>
@@ -57,9 +57,7 @@ export const ChatWindow = ({
                 <button
                   className="action-link"
                   onClick={() => {
-                    if (confirm("削除しますか？")) {
-                      onDeleteMessage(message.id);
-                    }
+                    onOpenDeleteModal(message.id);
                   }}
                 >
                   削除

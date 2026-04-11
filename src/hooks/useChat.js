@@ -10,8 +10,9 @@ export const useChat = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editText, setEditText] = useState("");
   const scrollEndRef = useRef(null);
-
   const currentMessages = allMessages[selectedId] || [];
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [messageIdToDelete, setMessageIdToDelete] = useState(null);
 
   useEffect(() => {
     scrollEndRef.current?.scrollIntoView();
@@ -82,6 +83,24 @@ export const useChat = () => {
     setDrafts({ ...drafts, [selectedId]: value });
   };
 
+  const handleOpenDeleteModal = (messageId) => {
+    console.log("handleOpenDeleteModal", messageId);
+    setMessageIdToDelete(messageId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (messageIdToDelete) {
+      handleDeleteMessage(messageIdToDelete);
+      handleDeleteCancel();
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+    setMessageIdToDelete(null);
+  };
+
   return {
     selectedId,
     setSelectedId,
@@ -99,5 +118,9 @@ export const useChat = () => {
     handleOpenEditModal,
     handleEditSave,
     handleEditCancel,
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleDeleteConfirm,
+    handleDeleteCancel,
   };
 };
