@@ -7,6 +7,7 @@
   line-height: 1.4;
   margin-bottom: 4px;
   word-wrap: break-word; /* 長い単語で改行する */
+  text-align: left;
 }
 
 /* 相手：左側・薄いグレー */
@@ -38,4 +39,43 @@
 .action-link:hover {
   color: #0056b3;
   text-decoration: underline;
+}
+
+.input-container {
+  padding: 15px;
+  background-color: white;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chat-textarea:focus {
+  border-color: #007bff;
+}
+
+.send-button {
+  align-self: flex-end; /* 右端に寄せる */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px; /* 丸みのあるボタン */
+  padding: 8px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.send-button:hover {
+  opacity: 0.8;
 }

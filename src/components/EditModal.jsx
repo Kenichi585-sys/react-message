@@ -1,6 +1,10 @@
 import React from "react";
+import { handleEnterSubmit } from "../utils/keyboard";
 
 export const EditModal = ({ editText, onChangeEditText, onSave, onCancel }) => {
+  const handleKeyDown = (e) => {
+    handleEnterSubmit(e, onSave);
+  };
   return (
     <div
       style={{
@@ -40,6 +44,7 @@ export const EditModal = ({ editText, onChangeEditText, onSave, onCancel }) => {
           }}
           value={editText}
           onChange={(e) => onChangeEditText(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <div style={{ textAlign: "right" }}>
           <button onClick={onCancel}>キャンセル</button>

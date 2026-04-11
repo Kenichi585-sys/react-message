@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { currentUserId, dummyChats, dummyMessages } from "../data";
+import { handleEnterSubmit } from "../utils/keyboard";
 
 export const useChat = () => {
   const [selectedId, setSelectedId] = useState(dummyChats[0].id);
@@ -20,41 +21,22 @@ export const useChat = () => {
     const currentDraft = drafts[selectedId] || "";
     if (currentDraft.trim() === "") return;
 
-    if (editingId) {
-      const updatedMessagesForPerson = allMessages[selectedId].map(
-        (message) => {
-          if (message.id === editingId) {
-            return { ...message, content: currentDraft };
-          }
-          return message;
-        },
-      );
-      setAllMessages({
-        ...allMessages,
-        [selectedId]: updatedMessagesForPerson,
-      });
-      setEditingId(null);
-    } else {
-      const newMessage = {
-        id: crypto.randomUUID(),
-        content: currentDraft,
-        sender: { id: currentUserId, name: "You" },
-        timestamp: new Date(),
-        isRead: false,
-      };
-      setAllMessages({
-        ...allMessages,
-        [selectedId]: [...allMessages[selectedId], newMessage],
-      });
-    }
+    const newMessage = {
+      id: crypto.randomUUID(),
+      content: currentDraft.trim(),
+      sender: { id: currentUserId, name: "You" },
+      timestamp: new Date(),
+      isRead: false,
+    };
+    setAllMessages({
+      ...allMessages,
+      [selectedId]: [...allMessages[selectedId], newMessage],
+    });
     setDrafts({ ...drafts, [selectedId]: "" });
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      handleSend();
-    }
+    handleEnterSubmit(e, handleSend);
   };
 
   const handleDeleteMessage = (messageId) => {
@@ -77,7 +59,7 @@ export const useChat = () => {
 
     const updatedMessageForPerson = allMessages[selectedId].map((message) => {
       if (message.id === editingId) {
-        return { ...message, content: editText };
+        return { ...message, content: editText.trim() };
       }
       return message;
     });
@@ -109,7 +91,6 @@ export const useChat = () => {
     setCurrentDraft,
     editText,
     setEditText,
-    editingId,
     isModalOpen,
     scrollEndRef,
     handleSend,

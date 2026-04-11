@@ -22,6 +22,18 @@ export const ChatWindow = ({
               marginBottom: "10px",
             }}
           >
+            {!isMyMessage && (
+              <div
+                style={{
+                  fontSize: "0.8em",
+                  color: "#666",
+                  marginBottom: "4px",
+                  marginLeft: "4px",
+                }}
+              >
+                {message.sender.name}
+              </div>
+            )}
             <div
               className={`message-bubble ${isMyMessage ? "sent" : "received"}`}
               style={{ whiteSpace: "pre-wrap" }}
