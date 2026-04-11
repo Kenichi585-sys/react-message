@@ -16,12 +16,18 @@ export const ChatWindow = ({
           <div
             key={message.id}
             style={{
-              textAlign: isMyMessage ? "right" : "left",
-              whiteSpace: "pre-wrap",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: isMyMessage ? "flex-end" : "flex-start",
               marginBottom: "10px",
             }}
           >
-            <div style={{ fontSize: "1em" }}>{message.content}</div>
+            <div
+              className={`message-bubble ${isMyMessage ? "sent" : "received"}`}
+              style={{ whiteSpace: "pre-wrap" }}
+            >
+              {message.content}
+            </div>
             <div style={{ fontSize: "0.7em", color: "#999", marginTop: "4px" }}>
               {new Date(message.timestamp).toLocaleTimeString([], {
                 hour: "2-digit",
@@ -30,8 +36,14 @@ export const ChatWindow = ({
             </div>
             {isMyMessage && (
               <div style={{ marginTop: "5px" }}>
-                <button onClick={() => onOpenEditModal(message)}>編集</button>
                 <button
+                  className="action-link"
+                  onClick={() => onOpenEditModal(message)}
+                >
+                  編集
+                </button>
+                <button
+                  className="action-link"
                   onClick={() => {
                     if (confirm("削除しますか？")) {
                       onDeleteMessage(message.id);
