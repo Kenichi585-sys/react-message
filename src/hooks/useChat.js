@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { currentUserId, dummyChats, dummyMessages } from "../data";
+import { currentUserId, dummyChats, dummyMessages, dummyUsers } from "../data";
 import { handleEnterSubmit } from "../utils/keyboard";
 
 export const useChat = () => {
@@ -22,10 +22,12 @@ export const useChat = () => {
     const currentDraft = drafts[selectedId] || "";
     if (currentDraft.trim() === "") return;
 
+    const currentUser = dummyUsers.find((u) => u.id === currentUserId);
+
     const newMessage = {
       id: crypto.randomUUID(),
       content: currentDraft.trim(),
-      sender: { id: currentUserId, name: "You" },
+      sender: currentUser,
       timestamp: new Date(),
       isRead: false,
     };

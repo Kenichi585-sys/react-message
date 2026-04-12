@@ -33,6 +33,8 @@ export const App = () => {
     handleDeleteCancel,
   } = useChat();
 
+  const selectedChat = dummyChats.find((chat) => chat.id === selectedId);
+
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       <Sidebar
@@ -43,6 +45,7 @@ export const App = () => {
       />
       <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <ChatWindow
+          selectedChat={selectedChat}
           messages={currentMessages}
           scrollEndRef={scrollEndRef}
           onOpenEditModal={handleOpenEditModal}
