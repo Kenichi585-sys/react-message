@@ -7,10 +7,11 @@ export const useChat = () => {
   const [drafts, setDrafts] = useState({});
   const [allMessages, setAllMessages] = useState(dummyMessages);
   const [editingId, setEditingId] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editText, setEditText] = useState("");
   const scrollEndRef = useRef(null);
   const currentMessages = allMessages[selectedId] || [];
+  const currentDraft = drafts[selectedId] || "";
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [messageIdToDelete, setMessageIdToDelete] = useState(null);
 
@@ -19,7 +20,6 @@ export const useChat = () => {
   }, [currentMessages]);
 
   const handleSend = () => {
-    const currentDraft = drafts[selectedId] || "";
     if (currentDraft.trim() === "") return;
 
     const currentUser = dummyUsers.find((u) => u.id === currentUserId);
@@ -42,19 +42,16 @@ export const useChat = () => {
     handleEnterSubmit(e, handleSend);
   };
 
-  const handleDeleteMessage = (messageId) => {
-    setAllMessages({
-      ...allMessages,
-      [selectedId]: allMessages[selectedId].filter(
-        (message) => message.id !== messageId,
-      ),
-    });
-  };
-
   const handleOpenEditModal = (message) => {
     setEditText(message.content);
     setEditingId(message.id);
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
+  };
+
+  const resetEditState = () => {
+    setIsEditModalOpen(false);
+    setEditingId(null);
+    setEditText("");
   };
 
   const handleEditSave = () => {
@@ -68,18 +65,12 @@ export const useChat = () => {
     });
 
     setAllMessages({ ...allMessages, [selectedId]: updatedMessageForPerson });
-    setIsModalOpen(false);
-    setEditingId(null);
-    setEditText("");
+    resetEditState();
   };
 
   const handleEditCancel = () => {
-    setIsModalOpen(false);
-    setEditingId(null);
-    setEditText("");
+    resetEditState();
   };
-
-  const currentDraft = drafts[selectedId] || "";
 
   const setCurrentDraft = (value) => {
     setDrafts({ ...drafts, [selectedId]: value });
@@ -91,16 +82,25 @@ export const useChat = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const resetDeleteState = () => {
+    setIsDeleteModalOpen(false);
+    setMessageIdToDelete(null);
+  };
+
   const handleDeleteConfirm = () => {
     if (messageIdToDelete) {
-      handleDeleteMessage(messageIdToDelete);
-      handleDeleteCancel();
+      setAllMessages({
+        ...allMessages,
+        [selectedId]: allMessages[selectedId].filter(
+          (message) => message.id !== messageIdToDelete,
+        ),
+      });
+      resetDeleteState();
     }
   };
 
   const handleDeleteCancel = () => {
-    setIsDeleteModalOpen(false);
-    setMessageIdToDelete(null);
+    resetDeleteState();
   };
 
   return {
@@ -112,11 +112,10 @@ export const useChat = () => {
     setCurrentDraft,
     editText,
     setEditText,
-    isModalOpen,
+    isEditModalOpen,
     scrollEndRef,
     handleSend,
     handleKeyDown,
-    handleDeleteMessage,
     handleOpenEditModal,
     handleEditSave,
     handleEditCancel,

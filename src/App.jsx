@@ -20,7 +20,7 @@ export const App = () => {
     setCurrentDraft,
     editText,
     setEditText,
-    isModalOpen,
+    isEditModalOpen,
     scrollEndRef,
     handleSend,
     handleKeyDown,
@@ -58,7 +58,7 @@ export const App = () => {
           onSend={handleSend}
         />
       </main>
-      {isModalOpen && (
+      {isEditModalOpen && (
         <EditModal
           editText={editText}
           onChangeEditText={setEditText}
