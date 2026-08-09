@@ -77,7 +77,6 @@ export const useChat = () => {
   };
 
   const handleOpenDeleteModal = (messageId) => {
-    console.log("handleOpenDeleteModal", messageId);
     setMessageIdToDelete(messageId);
     setIsDeleteModalOpen(true);
   };
